@@ -1,6 +1,8 @@
 # Site settings: Custom variableaccessible via {{ site.myvariable }}.
 title: Seline Bezen
-email: //todo
+undertitle: Seline Bezen
+friendsURL: https://raphaelraabe.github.io/
+email: bald verfügbar
 description: >-
   Offizielle Webseite der Galerie von Seline Bezen.
 baseurl: "" # the subpath of your site, e.g. /blog
