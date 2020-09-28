@@ -6,8 +6,8 @@ Website der Galerie von Seline Bezen
 
 ### Benutzte Webtechnologien
 
-- [Jekyll Static Site Generator!](https://jekyllrb.com/)
-- [PhotoSwipe!](https://photoswipe.com/)
+- [Jekyll Static Site Generator](https://jekyllrb.com/)
+- [PhotoSwipe](https://photoswipe.com/)
 
 ### Benutzte Sprachen
 
