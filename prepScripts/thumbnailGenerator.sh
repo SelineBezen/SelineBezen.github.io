@@ -1,7 +1,7 @@
 echo "Run 'sudo apt-get install imagemagick' before executing this script!"
 
 dir_paintings="img/paintings/"
-dir_repo="RaphaelRaabe.github.io"
+dir_repo="SelineBezen.github.io"
 dir_cur="$PWD"
 
 [ "$dir_cur" == *"$dir_repo"* ] && echo "Go to '$dir_repo' repository dir!" && exit
@@ -26,7 +26,8 @@ while [[ -n ${w//[0-9]/} ]]; do
 done
 
 for f in *.jpg; do
-  nf="thumb.${f%-*}.jpg"
+  # nf="thumb.${f%-*}.jpg"
+  nf="thumb.$f"
   convert -thumbnail "$w" "$f" "$nf"
 done
 

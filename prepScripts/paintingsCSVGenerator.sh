@@ -1,5 +1,5 @@
 dir_data="_data"
-dir_repo="RaphaelRaabe.github.io"
+dir_repo="SelineBezen.github.io"
 dir_cur="$PWD"
 
 [ "$dir_cur" == *"$dir_repo"* ] && echo "Go to '$dir_repo' repository dir!" && exit
@@ -25,6 +25,7 @@ for f in ../img/paintings/*; do
 
   name="${filename%.*}"
   orig="${raw#*"$dir_repo"}"
-  thumb="/img/thumb/thumb.${name%-*}.jpg"
+  # thumb="/img/thumb/thumb.${name%-*}.jpg"
+  thumb="/img/thumb/thumb.$name.jpg"
   echo "$name,$orig,$thumb" >> paintings.csv
 done
