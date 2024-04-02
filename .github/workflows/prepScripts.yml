@@ -13,53 +13,49 @@ jobs:
       
       - name: 1. Reducing image sizes to 1920px
         run: |
-          for f in *.jpg; do
+          find img/paintings/ -name '*.jpg' | while IFS= read -r f; do
               width=$(identify -format '%w' "$f")
               height=$(identify -format '%h' "$f")
-              if [ $width -gt 1920 ] && [ $height -gt 1920 ]; then
-                [ $width -ge $height ] && convert -thumbnail "1920" "$f" "$f" || convert -thumbnail "x1920" "$f" "$f"
+              if [ "$width" -gt 1920 ] && [ "$height" -gt 1920 ]; then
+                [ "$width" -ge "$height" ] && convert -thumbnail "1920" "$f" "$f" || convert -thumbnail "x1920" "$f" "$f"
               fi
           done
-        working-directory: img/paintings/
 
       - name: 2. Generating suffixes for image files
         run: |
-          for f in *.jpg; do
-            nf="${f%-*}";
-            [ "$f" != "$nf" ] && mv "$f" "$nf" && mv "$nf" "$nf.jpg";
+          find img/paintings/ -name '*.jpg' | while IFS= read -r f; do
+            nf="${f%-*}.jpg"
+            mv "$f" "$nf"
           done
 
-          for f in *.jpg; do
+          find img/paintings/ -name '*.jpg' | while IFS= read -r f; do
             suffix=$(identify -format '%wx%h' "$f")
             mv "$f" "${f%.*}-$suffix.jpg"
           done
-        working-directory: img/paintings/
 
       - name: 3. Generating thumbnails
         run: |
-          dir_thumb="../thumb"
-          [ -d "$dir_thumb" ] && rm -rf "$dir_thumb"
-          mkdir "$dir_thumb"
+          dir_thumb="img/thumb"
+          mkdir -p "$dir_thumb"
           w=200
-          for f in *.jpg; do
-            nf="thumb.${f%-*}.jpg"
-            convert -thumbnail "$w" "$f" "$nf" && mv $nf "$dir_thumb/"
+          find img/paintings/ -name '*.jpg' | while IFS= read -r f; do
+            nf="$dir_thumb/thumb.${f##*/}"
+            convert -thumbnail "$w" "$f" "$nf"
           done
-        working-directory: img/paintings/
 
-      - name: 4. Writing paintigs.csv-file
+      - name: 4. Writing paintings.csv-file
         run: |
-          fil_csv="paintings.csv"
-          echo "name,orig,thumb" > $fil_csv
-          for f in ../img/paintings/*.jpg; do
+          fil_csv="_data/paintings.csv"
+          echo "name,orig,thumb" > "$fil_csv"
+          find img/paintings/ -name '*.jpg' | while IFS= read -r f; do
             raw=$(readlink -f "$f")
             filename="${raw##*/}"
             name="${filename%.*}"
-            orig="/img/paintings/$name.jpg"
-            thumb="/img/thumb/thumb.${name%-*}.jpg"
-            echo "$name,$orig,$thumb" >> $fil_csv
+            orig="/img/paintings/$filename"
+            thumb="/img/thumb/thumb.${name}.jpg"
+            echo "$name,$orig,$thumb" >> "$fil_csv"
           done
-        working-directory: _data/
+
       - name: 5. Commit automated preparation
         run: |
           git config --global user.name 'BOT'
